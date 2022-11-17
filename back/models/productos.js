@@ -38,9 +38,9 @@ const tablaProductos = mongoose.Schema({
         required: [true,"Por favor seleccione la categoria del producto"],
         enum:{
             values:[
-                "Perfumeria",
-                "Maquillaje",
-                "Cuidado Facial",
+                "Herramientas",
+                "Material Electrico",
+                "Accesorios",
                 "Cuidado Diario",
                 "Bebes",
                 "Niños",

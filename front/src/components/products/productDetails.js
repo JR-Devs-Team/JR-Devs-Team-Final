@@ -12,7 +12,7 @@ export const ProductDetails = () => {
   const dispatch = useDispatch();
   const alert = useAlert();
   const [quantity, setQuantity] = useState(1);
-  const consumir = 
+  /*const consumir = 
   {
     "_id": "6359bce4372b9abf2ed43bbb",
     "nombre": "Naturé Jugando en los Árboles",
@@ -34,7 +34,7 @@ export const ProductDetails = () => {
     "fechaCreacion": "2022-10-26T23:04:04.726Z",
     "__v": 0
   };
-
+*/
 
   useEffect(() => {
     if (error){
