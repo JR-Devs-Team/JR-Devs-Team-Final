@@ -7,7 +7,7 @@ export const Sidebar = () => {
         <nav id='sidebar'>
             <ul className='list-unstyled components'>
                 <li>
-                    <Link to="/admin/dashboard"><i className='fa fa-tachometer'/>Administracion</Link>
+                    <Link to="/Dashboard"><i className='fa fa-tachometer'/>Administracion</Link>
                 </li>
                 {/*Botones de Producto*/}
                 <li>
@@ -17,10 +17,10 @@ export const Sidebar = () => {
                     </a>
                     <ul className='collapse list-unstyled' id="productSubmenu"> 
                         <li>
-                            <Link to="#"><i className='fa fa-clipboard'/>Lista de Productos</Link>
+                            <Link to="/ProductList"><i className='fa fa-clipboard'/>Lista de Productos</Link>
                         </li>
                         <li>
-                            <Link to="#"><i className='fa fa-plus'/>Crear Producto</Link>
+                            <Link to="/nuevoProducto"><i className='fa fa-plus'/>Crear Producto</Link>
                         </li>
                     </ul>
                 </li>

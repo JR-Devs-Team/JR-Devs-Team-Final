@@ -14,9 +14,10 @@ const Home = () => {
         if(error){
             return alert.error(error)
         }
-        dispatch(getProducts());
-        //alert.success("OK")
+
+        dispatch(getProducts());       
     }, [dispatch])
+
     return (
         <Fragment>
             {loading ? <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>: (

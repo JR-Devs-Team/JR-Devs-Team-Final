@@ -66,7 +66,7 @@ export const ProductDetails = () => {
     <Fragment>
             {loading ? <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>: (
                   <Fragment>
-                  <MetaData title="Naturé Jugando en los Árboles"></MetaData>
+                  <MetaData title={product.nombre}></MetaData>
                   <div className='row d-flex justify-content-around'>
                       <div className='col-12 col-lg-5 img-fluid' id="imagen_producto">
                           <Carousel pause='hover'>
