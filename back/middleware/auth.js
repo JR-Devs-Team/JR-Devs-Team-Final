@@ -18,7 +18,7 @@ exports.isAuthenticateUser = catchAsyncErrors (async (req, res, next) => {
 })
 
 //Capturamos role
-exporte.authorizeRoles = (...roles) => {
+exports.authorizeRoles = (...roles) => {
     return (req, res, next) => {
         if(!roles.includes(req.user.role)){
             return next (new ErrorHandler(`Role (${req.user.role}) No esta Autorizado a entrar a esta Area`, 403))

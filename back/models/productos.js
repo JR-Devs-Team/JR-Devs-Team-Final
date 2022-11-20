@@ -78,6 +78,12 @@ const tablaProductos = mongoose.Schema({
             }
         }
     ],
+    user:{
+        type: mongoose.Schema.ObjectId,
+        ref: 'User',
+        required: true
+    },
+
     fechaCreacion:{
         type: Date,
         default: Date.now
