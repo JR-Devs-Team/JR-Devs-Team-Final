@@ -4,6 +4,7 @@ const catchAsyncErrors = require ("../middleware/catchAsyncErrors");
 const tokenEnviado = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require ("crypto");
+const { trusted } = require("mongoose");
 
 //Registrar un nuevo usuario /api/usuario/registro
 exports.registroUsuario = catchAsyncErrors( async (req, res, next) =>{
@@ -124,4 +125,98 @@ exports.resetPassword = catchAsyncErrors(async(req, res, next) =>{
 
     await user.save();
     tokenEnviado(user,200,res)
+})
+
+//Ver perfil de usuario
+exports.getUserProfile = catchAsyncErrors (async(req, res, next) => {
+    const user = await User.findById(req.user.id);
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+//Update Contraseña
+exports.updatePassword = catchAsyncErrors( async(req, res, next) =>{
+    const user = await User.findById(req.user.id).select("+password");
+
+    //Revisamos si la Contraseña vieja es igual que la nueva
+    const passIguales = await user.compararPass(req.body.oldPassword)
+
+    if(!passIguales){
+        return next(new ErrorHandler("La Contraseña anterior no es correcta",401))
+    }
+
+    user.password = req.body.newPassword;
+    await user.save();
+
+    tokenEnviado(user,200, res)
+})
+
+//Update perfil de usuario
+exports.updateProfile = catchAsyncErrors (async(req, res, next) => {
+    const nuevaData = {
+        nombre: req.body.nombre,
+        email: req.body.email
+        // campo: req.body.campo (direccion,telefono) /* Depende de los campos que necesitemos*/
+    }
+
+    //update Avatar: pendiente
+
+    const user = await User.findByIdAndUpdate(req.user.id, nuevaData, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    })
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+//Servicios controladores sobre usuarios por parte de los Administradores
+
+//Ver todos los Usuarios
+exports.getAllUsers = catchAsyncErrors(async(req,res, next) => {
+    const users = await User.find
+
+    res.status(200).json({
+        success: true,
+        users
+    })
+})
+
+// Ver el detalle del Usuario
+exports.getUserDetails = catchAsyncErrors(async(req,res, next) => {
+    const user = await User.findById(req.params.id);
+    
+    if(!user){
+        return next(new ErrorHandler(`No se Ha encontrado ningun Usuario con el id:${req.params.id}}`,401))
+    }
+
+    res.status(200).json({
+        success: true,
+        user
+    })
+})
+
+//Actualizar perfil de usuario 
+exports.updateUser = catchAsyncErrors(async(req,res, next) => {
+    const nuevaData = {
+        nombre: req.body.nombre,
+        email: req.body.email,
+        role: req.body.role
+    }
+
+    const user = await User.findByIdAndUpdate(req.params.id, nuevaData, {
+        new: true,
+        runValidators: true,
+        useFindAndModify: false
+    })
+
+    res.status(200).json({
+        success: true,
+        user
+    })
 })
