@@ -14,13 +14,14 @@ const
     updateProfile,
     getAllUsers,
     getUserDetails,
-    updateUser
+    updateUser,
+    deleteUser
 } = require("../controllers/authController");
 const { isAuthenticateUser, authorizeRoles } = require("../middleware/auth");
 
-router.route('/login').get(loginUser); //Ruta para iniciar sesion del Usuario
-router.route('/logout').get(isAuthenticateUser, logOut); //Ruta para cerrar sesion del Usuario
 router.route('/usuario/registro').post(registroUsuario); //Ruta para la creacion del Usuario
+router.route('/login').post(loginUser); //Ruta para iniciar sesion del Usuario
+router.route('/logout').get(isAuthenticateUser, logOut); //Ruta para cerrar sesion del Usuario
 router.route('/forgotPassword').post(forgotPassword); //Ruta para recuperar contraseña
 router.route('/resetPassword/:token').post(resetPassword); //Ruta para resetear la contraseña
 router.route('/perfil').get(isAuthenticateUser, getUserProfile); //Ruta para visualizar el perfil
@@ -31,5 +32,6 @@ router.route('/perfil/updateProfile').put(isAuthenticateUser, updateProfile); //
 router.route('/admin/allUsers').get(isAuthenticateUser, authorizeRoles("admin"), getAllUsers); //Ruta para ver todos los usuarios
 router.route('/admin/user/:id').get(isAuthenticateUser, authorizeRoles("admin"), getUserDetails); //Ruta para ver todos los usuarios
 router.route('/admin/updateUser/:id').put(isAuthenticateUser, authorizeRoles("admin"), updateUser); //Ruta para actualizar los datos del usuarios
+router.route('/admin/deleteUser/:id').delete(isAuthenticateUser, authorizeRoles("admin"), deleteUser); //Ruta para eliminar los usuarios
 
 module.exports = router;

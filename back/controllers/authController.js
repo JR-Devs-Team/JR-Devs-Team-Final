@@ -192,7 +192,7 @@ exports.getUserDetails = catchAsyncErrors(async(req,res, next) => {
     const user = await User.findById(req.params.id);
     
     if(!user){
-        return next(new ErrorHandler(`No se Ha encontrado ningun Usuario con el id:${req.params.id}}`,401))
+        return next(new ErrorHandler(`No se Ha encontrado ningun Usuario con el id:${req.params.id}`,401))
     }
 
     res.status(200).json({
@@ -218,5 +218,38 @@ exports.updateUser = catchAsyncErrors(async(req,res, next) => {
     res.status(200).json({
         success: true,
         user
+    })
+})
+
+//Eliminar un Usuario
+exports.deleteUser = catchAsyncErrors(async(req,res, next) => {
+    const user = await User.findById(req.params.id);
+
+    if(!user){
+        return next(new ErrorHandler(` Usuario con el id:${req.params.id} no se encuentra en la base de datos`,401))
+    }
+
+    await user.remove();
+
+    res.status(200).json({
+        success: true,
+        message: "Usuario Eliminado Correctamente"
+    })
+})
+
+
+//Inactivar Usuario
+exports.inactiveUser = catchAsyncErrors(async(req,res, next) => {
+    const user = await User.findById(req.params.id);
+
+    if(!user){
+        return next(new ErrorHandler(` Usuario con el id:${req.params.id} no se encuentra en la base de datos`,401))
+    }
+
+    user.estado = "Inactivo";
+
+    res.status(200).json({
+        success: true,
+        message: "Usuario dado de baja Correctamente"
     })
 })
