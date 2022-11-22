@@ -3,19 +3,30 @@ const catchAsyncErrors = require("../middleware/catchAsyncErrors");
 const producto = require("../models/productos");
 const ErrorHandler = require("../utils/errorHandler");
 const fetch =(url) => import('node-fetch').then(({default:fetch}) => fetch(url));
+const APIFeatures = require("../utils/apiFeatures");
 
 // Ver Lista de Productos
-exports.getProducts = catchAsyncErrors( async(req,res,next) => {
-    const productos = await producto.find();
-    if(!productos){
-        return next(new ErrorHandler("Informacion no Encontrada", 404)) 
-    }
+exports.getProducts = catchAsyncErrors( async(req,res,next) => {  
+    const resPerPage = 4;
+    const cantidad = await producto.countDocuments();
+    const apiFeatures = new APIFeatures(producto.find(), req.query)
+        .search()
+        .filter();
+
+    let productos = await apiFeatures.query;
+    let filteredCantidad= productos.length;
+    apiFeatures.pagination(resPerPage);
+    productos = await apiFeatures.query.clone();
+
     res.status(200).json({
         success:true,
-        cantidad: productos.length,
+        cantidad,
+        resPerPage,
+        filteredCantidad,
         productos
     })
 })
+
 
 // Ver un Producto por ID
 exports.getProductById = catchAsyncErrors( async(req,res,next) => {

@@ -1,6 +1,7 @@
 import React, { Fragment } from 'react'
 import { Link } from 'react-router-dom'
 import '../../App.css'
+import { Search } from './Search'
 
 const Header = () => {
   return (
@@ -8,25 +9,19 @@ const Header = () => {
         <nav class="navbar navbar-expand-lg navbar-light" style={{backgroundColor: '#D1C9FF'}}>
             <div className='col-12 col-md-3'>
                 <div className='navbar-brand'>
-                    <a href="/">
-                        <img className='image-logo' src="./logo.png" alt="Logo"/>
-                    </a>                    
+                    <Link to="/">
+                        <img className='image-logo' src="Logo.png" alt="Logo"/>
+                    </Link>           
                 </div>
             </div>
-            <div className='col-12 col-md-6 mt-2 mt-md-0'>
-                <div className="input-group">
-                    <input 
-                        type="text" 
-                        id="search_field"
-                        className="form-control"
-                        placeholder='Que producto Busca?'/>
-                    <div className='input-group-append'>
-                        <button id="search-btn" class="btn">
-                            <i className= "fa fa-search-plus fa-lg text-white" aria-hidden="true"/>
-                        </button>
-                    </div>
-                </div>
+            <div className='col-12 col-md-4 mt-2 mt-md-0'>
+                {/*Aqui va buscar*/}
+                <Search></Search>
             </div>
+            {/*Boton inicio Sesion*/}
+            <Link to="/login" className='btn ml-4' id='login_btn'>
+                Login
+            </Link>
             <div className="col-12 col-md-3 mt-4 mt-md-0 text-center">
             <div className='ml-4 dropdown d-inline'>
                     <Link to="#" className="btn dropdown-toggle text-black mr-4" type="button"

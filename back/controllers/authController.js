@@ -4,19 +4,26 @@ const catchAsyncErrors = require ("../middleware/catchAsyncErrors");
 const tokenEnviado = require("../utils/jwtToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require ("crypto");
+const cloudinary = require ("cloudinary")
 const { trusted } = require("mongoose");
 
 //Registrar un nuevo usuario /api/usuario/registro
 exports.registroUsuario = catchAsyncErrors( async (req, res, next) =>{
     const{nombre, email, password} = req.body;
 
+    const result= await cloudinary.v2.uploader.upload(req.body.avatar, {
+        folder:"avatars",
+        width:240,
+        crop:"scale"
+    })
+
     const user = await User.create({
         nombre,
         email,
         password,
         avatar:{
-            public_id: "qTO8srKnYIEpIiINyooVR4CIgZUREBERAREQERED",
-            url: "https://png.pngtree.com/png-vector/20191110/ourmid/pngtree-avatar-icon-profile-icon-member-login-vector-isolated-png-image_1978396.jpg"
+            public_id: result.public_id,
+            url: result.secure_url
         }
     })
 

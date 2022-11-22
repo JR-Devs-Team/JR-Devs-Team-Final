@@ -34,7 +34,7 @@ const tablaProductos = mongoose.Schema({
         }
     ],
     categoria:{
-        type:String,
+        type: String,
         required: [true,"Por favor seleccione la categoria del producto"],
         enum:{
             values:[
@@ -83,7 +83,6 @@ const tablaProductos = mongoose.Schema({
         ref: 'User',
         required: true
     },
-
     fechaCreacion:{
         type: Date,
         default: Date.now

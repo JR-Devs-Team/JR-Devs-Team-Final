@@ -8,8 +8,8 @@ import ProductDetails from './components/products/productDetails';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Dashboard } from './components/admin/Dashboard';
 import ProductsList from './components/admin/ProductsList';
-//import ProtectedRoute from './routes/ProtectedRoute';
-//import NewProduct from './components/admin/NewProduct';
+import { Login } from './components/user/Login';
+import { Register } from './components/user/Register';
 
 function App() {
   return (
@@ -21,8 +21,11 @@ function App() {
             <Route path="/" element={<Home/>}/>
             <Route path="/Home" element={<Home/>}/>
             <Route path="/producto/:id" element={<ProductDetails/>}/>
-            <Route path="/dashboard" element={<Dashboard />}/>
+            <Route path="/dashboard" element={<Dashboard/>}/>
             <Route path="/productList" element={<ProductsList />}/>
+            <Route path="/search/:keyword" element={<Home/>}/>
+            <Route path="/login" element={<Login/>}/>
+            <Route path="/register" element={<Register/>}/>
           </Routes>
         </div>
         <Footer/>
