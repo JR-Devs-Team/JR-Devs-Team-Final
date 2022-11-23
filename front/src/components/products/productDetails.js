@@ -3,46 +3,24 @@ import MetaData from '../layout/MetaData'
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { clearErrors, getProductDetails } from '../../actions/productActions';
+import { addItemToCart } from '../../actions/cartActions'
 import { useAlert } from 'react-alert';
 import { Carousel } from 'react-bootstrap';
 
 export const ProductDetails = () => {
   const {loading, product, error} = useSelector(state => state.productDetails)
-  const {id} = useParams();
+  const params= useParams();
   const dispatch = useDispatch();
   const alert = useAlert();
   const [quantity, setQuantity] = useState(1);
-  /*const consumir = 
-  {
-    "_id": "6359bce4372b9abf2ed43bbb",
-    "nombre": "Naturé Jugando en los Árboles",
-    "precio": 38400,
-    "descripcion": "Naturé Colonia jugando en los Árbores es una invitación para sentir la divertida sensación de jugar en árbol, con aquel delicioso olorcito que mezcla el fresco cítrico de las frutas cambiando con madera y el frescor del romero y la albahaca. Perfecta para jugar, explorar el mundo y ​descobrir los sentidos, sin limitaciones.",
-    "calificacion": 3.9,
-    "imagen": [
-      {
-        "public_id": "productos/dsvbpny402gelwugv2le",
-        "url": "./images/productos/Colonia.png",
-        "_id": "6359bce4372b9abf2ed43bbc"
-      }
-    ],
-    "categoria": "Bebes",
-    "vendedor": "Jenny Martinez",
-    "inventario": 50,
-    "numCalificaciones": 29,
-    "opiniones": [],
-    "fechaCreacion": "2022-10-26T23:04:04.726Z",
-    "__v": 0
-  };
-*/
 
   useEffect(() => {
     if (error){
       alert.error(error);
       dispatch(clearErrors())
     }
-    dispatch(getProductDetails(id))
-  },[dispatch, alert, error, id])
+    dispatch(getProductDetails(params.id))
+  },[dispatch, alert, error, params.id])
 
   const increaseQty = () => {
     const contador = document.querySelector('.count')
@@ -60,6 +38,11 @@ export const ProductDetails = () => {
 
     const qty = contador.valueAsNumber-1;
     setQuantity(qty);
+  }
+
+  const addToCart = () => {
+    dispatch(addItemToCart(params.id, quantity));
+    alert.success('Producto agregado al carro')
   }
 
   return (
@@ -96,7 +79,7 @@ export const ProductDetails = () => {
                             <span className='btn btn-primary plus' onClick={increaseQty}>+</span>
                             {/*<input type="number" className='form-control count d-inline' readOnly></input>*/}
                           </div>
-                          <button type="button" id="carrito_btn" className='btn btn-primary d-inline ml-4' disabled={product.inventarios===0}>Agregar al Carrito</button>
+                          <button type="button" id="carrito_btn" className='btn btn-primary d-inline ml-4' disabled={product.inventarios===0} onClick={addToCart}>Agregar al Carrito</button>
                           <hr></hr>
                           <p>Estado: <span id="stock_estado" className={product.inventario>0 ? 'greenColor':'redColor'}>{product.inventario>0 ? "En existensia":"Agotado"}</span></p>
                           <hr></hr>
