@@ -1,20 +1,12 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect } from "react";
 import MetaData from "./layout/MetaData";
 import { useDispatch, useSelector } from "react-redux";
 import { getProducts } from "../actions/productActions";
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAlert } from "react-alert";
-import Pagination from "react-js-pagination"
-import Slider from "rc-slider"
-import 'rc-slider/assets/index.css'
-//import { Product } from "./products/Product";
 
 const Home = () => {
-    const params = useParams();
-    const keyword = params.keyword;
-    const [precio, setPrecio] = useState([100, 1000000])
-    const[currentPage, setCurrentPage] = useState(1)
-    const { loading, productos, error, resPerPage, cantidad } = useSelector(state => state.products)
+    const { loading, productos, error } = useSelector(state => state.products)
     const alert = useAlert();
 
     const dispatch = useDispatch();
@@ -22,13 +14,9 @@ const Home = () => {
         if(error){
             return alert.error(error)
         }
-        dispatch(getProducts(currentPage, keyword, precio));       
-    }, [dispatch, alert, error, currentPage, keyword, precio])
-
-    function setCurrentPageNo(pageNumber){
-        setCurrentPage(pageNumber)
-    }
-
+        dispatch(getProducts());
+        //alert.success("OK")
+    }, [dispatch, alert, error])
     return (
         <Fragment>
             {loading ? <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>: (
@@ -37,25 +25,6 @@ const Home = () => {
                     <h1 id="Encabezado">Ultimos Productos</h1>
                     <section id="productos" className="container mt-5">
                         <div className="row">
-                            <Slider
-                                range
-                                className="t-slider"
-                                marks={{
-                                    100:`$100`,
-                                    1000000: `$1000000`
-                                }}
-                                min={100}
-                                max={1000000}
-                                defaultValue = {[100, 1000000]}
-                                tipFormater = {value => `$${value}`}
-                                tipProps = {{
-                                    placement : 'top',
-                                    prefixCls: 'rc-slider-tolltip',
-                                    visible: true
-                                }}
-                                value = {precio}
-                                onChange = {precio => setPrecio(precio)}
-                            />
                             {productos && productos.map(producto => (
                                 <div key={producto._id} className="col-sm-12 col-md-6 col-lg-3 my-3">
                                     <div className="card p-3 rounded">
@@ -84,20 +53,6 @@ const Home = () => {
                             ))}
                         </div>
                     </section>
-                    <div className="d-flex justify-content-center mt-5">
-                        <Pagination
-                            activePage = {currentPage}
-                            itemCountPerPage = {resPerPage}
-                            totalItemsCount = {cantidad}
-                            onChange = {setCurrentPageNo}
-                            nextPageText = {"Siguiente"}
-                            prevPageText = {"Anterior"}
-                            firstPageText = {"Primera"}
-                            lastPageText = {"Ultima"}
-                            itemClass = "page-item"
-                            linkClass = "page-link"
-                        />                        
-                    </div>
                 </Fragment>
             )}
         </Fragment>

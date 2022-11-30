@@ -3,13 +3,12 @@ import MetaData from '../layout/MetaData'
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from 'react-router-dom';
 import { clearErrors, getProductDetails } from '../../actions/productActions';
-import { addItemToCart } from '../../actions/cartActions'
 import { useAlert } from 'react-alert';
 import { Carousel } from 'react-bootstrap';
 
 export const ProductDetails = () => {
   const {loading, product, error} = useSelector(state => state.productDetails)
-  const params= useParams();
+  const {id} = useParams();
   const dispatch = useDispatch();
   const alert = useAlert();
   const [quantity, setQuantity] = useState(1);
@@ -19,8 +18,8 @@ export const ProductDetails = () => {
       alert.error(error);
       dispatch(clearErrors())
     }
-    dispatch(getProductDetails(params.id))
-  },[dispatch, alert, error, params.id])
+    dispatch(getProductDetails(id))
+  },[dispatch, alert, error, id])
 
   const increaseQty = () => {
     const contador = document.querySelector('.count')
@@ -40,16 +39,11 @@ export const ProductDetails = () => {
     setQuantity(qty);
   }
 
-  const addToCart = () => {
-    dispatch(addItemToCart(params.id, quantity));
-    alert.success('Producto agregado al carro')
-  }
-
   return (
     <Fragment>
             {loading ? <i class="fa fa-spinner fa-pulse fa-3x fa-fw"></i>: (
                   <Fragment>
-                  <MetaData title={product.nombre}></MetaData>
+                  <MetaData title="Naturé Jugando en los Árboles"></MetaData>
                   <div className='row d-flex justify-content-around'>
                       <div className='col-12 col-lg-5 img-fluid' id="imagen_producto">
                           <Carousel pause='hover'>
@@ -79,7 +73,7 @@ export const ProductDetails = () => {
                             <span className='btn btn-primary plus' onClick={increaseQty}>+</span>
                             {/*<input type="number" className='form-control count d-inline' readOnly></input>*/}
                           </div>
-                          <button type="button" id="carrito_btn" className='btn btn-primary d-inline ml-4' disabled={product.inventarios===0} onClick={addToCart}>Agregar al Carrito</button>
+                          <button type="button" id="carrito_btn" className='btn btn-primary d-inline ml-4' disabled={product.inventarios===0}>Agregar al Carrito</button>
                           <hr></hr>
                           <p>Estado: <span id="stock_estado" className={product.inventario>0 ? 'greenColor':'redColor'}>{product.inventario>0 ? "En existensia":"Agotado"}</span></p>
                           <hr></hr>
